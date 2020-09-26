@@ -7,7 +7,7 @@ module.exports = (env) => {
     return {
         entry: './src/app.js',
         output: {
-            path: path.join(__dirname, 'public'),
+            path: path.join(__dirname, 'public', 'dist'),
             filename: 'bundle.js'
         },
         module: {
@@ -34,11 +34,19 @@ module.exports = (env) => {
                 ]
             }]
         },
-        plugins: [new MiniCssExtractPlugin()],
+        plugins: [
+            new MiniCssExtractPlugin({
+              // Options similar to the same options in webpackOptions.output
+              // both options are optional
+              filename: 'styles.css',
+              chunkFilename: 'styles.css.map',
+            })
+        ],
         devtool: isProduction ? 'source-map' : 'inline-source-map',
         devServer: {
             contentBase: path.join(__dirname, 'public'),
-            historyApiFallback: true
+            historyApiFallback: true,
+            publicPath:'/dist/'
         }
     };
 };
